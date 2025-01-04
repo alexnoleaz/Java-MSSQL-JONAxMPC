@@ -44,7 +44,7 @@ export class AuthService implements InterAuthService {
       password,
     };
 
-    return this.generateAccessToken(data);
+    return this.generateAccessToken(data, "Login success");
   }
 
   async logout(): Promise<Response<boolean>> {
@@ -80,10 +80,13 @@ export class AuthService implements InterAuthService {
       refresh_token: refreshToken,
     };
 
-    return this.generateAccessToken(data);
+    return this.generateAccessToken(data, "Refresh token success");
   }
 
-  private async generateAccessToken(data: any): Promise<Response<AuthData>> {
+  private async generateAccessToken(
+    data: any,
+    message: string,
+  ): Promise<Response<AuthData>> {
     try {
       const result = await this.axios.post<AuthData>(
         "/token",
@@ -93,8 +96,8 @@ export class AuthService implements InterAuthService {
       this.setStorage(result.data);
 
       return {
+        message,
         status: result.status,
-        message: "Refresh token success",
         data: result.data,
       };
     } catch (error) {

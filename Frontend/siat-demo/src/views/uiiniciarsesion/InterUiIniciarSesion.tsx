@@ -1,9 +1,11 @@
+import { AuthData } from "../../services/api-auth/models";
+
 // InterUiIniciarSesion.tsx
 export interface InterUiIniciarSesion {  
   login?: (email: string, password: string) => void;
 }
 
-export interface UiIniciarSesionResponse {
+export interface UiIniciarSesionResponse extends AuthData{
   access_token: string;
   expires_in: number;
   refresh_expires_in: number;
