@@ -1,17 +1,17 @@
 import React from 'react';
 //import Logo from '../../resources/images/logo-minjus.jpg'
-import { getToken } from '../../methods/storage';
-import { logout } from '../../services/api-auth/auth';
-import { TitleBarProps } from './InterUiTitleBar';
 import UiButton from '../../components/uibutton/UiButton';
-import '../../resources/css/UiTitleBar.css'
+import { getToken } from '../../methods/storage';
+import '../../resources/css/UiTitleBar.css';
+import { AuthService } from '../../services/api-auth/auth-service';
+import { TitleBarProps } from './InterUiTitleBar';
 
 const UiTitleBar: React.FC<TitleBarProps> = ({ data }) => {
   const auth = getToken()
 
   const handleLogout = async () => {
-   const response =  await logout();
-   if(response) {
+   const response =  await new AuthService().logout();
+   if(response.data) {
     window.location.href = '/'
    }
   }
