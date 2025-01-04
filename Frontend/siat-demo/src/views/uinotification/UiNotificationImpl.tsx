@@ -1,24 +1,21 @@
 import React from "react";
 import { UiNotification } from "./UiNotification";
+import { NotificationTypes } from "./NotificationTypes";
 
 export class UiNotificationImpl extends UiNotification {
-  componentDidMount(): void {
-    console.log("UiNotificationImpl se ha montado");
-  }
-
-  send(message: string, type: "success" | "error" | "warning" | "info"): void {
-    this.setState({ message, type, visible: true });
+  send(message: string, type: NotificationTypes, status: number): void {
+    this.setState({ message, type, status, visible: true });
 
     setTimeout(() => {
       this.setState({ visible: false });
-    }, 5000);
+    }, 3000);
   }
 
   render() {
-    return <div>{super.render()}</div>;
+    return super.render();
   }
 }
 
-export default React.forwardRef<UiNotificationImpl, {}>((props, ref) => (
+export default React.forwardRef<UiNotificationImpl, {}>((_, ref) => (
   <UiNotificationImpl ref={ref} />
 ));

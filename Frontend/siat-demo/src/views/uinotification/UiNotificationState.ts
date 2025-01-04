@@ -1,5 +1,8 @@
+import { NotificationTypes } from "./NotificationTypes";
+
 export interface UiNotificationState {
   message?: string;
-  type?: string;
-  visible: boolean;
+  type?: NotificationTypes;
+  status?: number;
+  visible?: boolean;
 }

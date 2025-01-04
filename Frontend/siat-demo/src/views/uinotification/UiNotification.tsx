@@ -1,36 +1,46 @@
 import React, { Component } from "react";
 import { UiNotificationState } from "./UiNotificationState";
 import { InterUiNotification } from "./InterUiNotification";
+import { NotificationTypes } from "./NotificationTypes";
 
 export class UiNotification
   extends Component<{}, UiNotificationState>
   implements InterUiNotification
 {
-  constructor() {
-    super({});
-    this.state = {
-      message: undefined,
-      type: undefined,
-      visible: false,
-    };
+  state: UiNotificationState = {
+    visible: false,
+  };
+
+  send(message: string, type: NotificationTypes, status: number): void {
+    this.setState({ message, type, status, visible: true });
   }
 
-  componentDidMount(): void {
-    console.log("UiNotification se ha montado");
+  sendInfo(message: string, status: number): void {
+    this.send(message, NotificationTypes.Info, status);
   }
 
-  send(message: string, type: "success" | "error" | "warning" | "info"): void {
-    window.alert(message);
+  sendWarning(message: string, status: number): void {
+    this.send(message, NotificationTypes.Warning, status);
+  }
+
+  sendError(message: string, status: number): void {
+    this.send(message, NotificationTypes.Error, status);
   }
 
   render() {
-    const { message, type, visible } = this.state;
+    const { message, type, status, visible } = this.state;
 
     if (!visible) return null;
 
     return (
-      <div className={`notification ${type}`} style={this.getStyles()}>
+      <div
+        id="notification"
+        className={`notification ${type}`}
+        style={this.getStyles()}
+      >
         {message}
+        <hr />
+        status: {status}
       </div>
     );
   }
@@ -50,16 +60,18 @@ export class UiNotification
 
   private getBackgroundColor() {
     switch (this.state.type) {
-      case "success":
-        return "green";
-      case "error":
+      case NotificationTypes.Error:
         return "red";
-      case "info":
+      case NotificationTypes.Info:
         return "blue";
-      case "warning":
-        return "orange";
+      case NotificationTypes.Warning:
+        return "yellow";
       default:
         return "gray";
     }
   }
 }
+
+export default React.forwardRef<UiNotification, {}>((_, ref) => (
+  <UiNotification ref={ref} />
+));
